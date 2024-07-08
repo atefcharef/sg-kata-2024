@@ -1,38 +1,14 @@
 package com.kata.katabackend.utils;
 
-
 public class NumberTransformer {
 
-//    public static String transform(int number) {
-//        StringBuilder result = new StringBuilder();
-//
-//        if (number % 3 == 0) {
-//            result.append("FOO");
-//        }
-//        if (number % 5 == 0) {
-//            result.append("BAR");
-//        }
-//
-//        String numberStr = String.valueOf(number);
-//        for (char digit : numberStr.toCharArray()) {
-//            if (digit == '3' && number % 3 != 0) {
-//                result.append("FOO");
-//            }
-//            if (digit == '5' && number % 5 != 0) {
-//                result.append("BAR");
-//            }
-//            if (digit == '7') {
-//                result.append("QUIX");
-//            }
-//        }
-//
-//        if (result.isEmpty()) {
-//            return numberStr;
-//        }
-//
-//        return result.toString();
-//    }
 
+    /**
+     * Transforms a number into a string based on specific rules.
+     *
+     * @param number the number to transform
+     * @return the transformed string
+     */
     public static String transform(int number) {
         StringBuilder result = new StringBuilder();
         String numberStr = String.valueOf(number);
