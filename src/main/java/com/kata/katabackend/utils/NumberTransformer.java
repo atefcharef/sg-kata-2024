@@ -1,5 +1,10 @@
 package com.kata.katabackend.utils;
 
+import com.kata.katabackend.exceptions.NumberNotInRangeException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NumberTransformer {
 
 
@@ -13,7 +18,12 @@ public class NumberTransformer {
      * @param number the number to transform
      * @return the transformed string
      */
-    public static String transform(int number) {
+    public static String transform(int number) throws NumberNotInRangeException  {
+
+        if (number < 0 || number > 100) {
+            throw new NumberNotInRangeException("Number must be between 0 and 100");
+        }
+
         StringBuilder result = new StringBuilder();
         String numberStr = String.valueOf(number);
 
@@ -25,12 +35,19 @@ public class NumberTransformer {
         }
 
         for (char digit : numberStr.toCharArray()) {
-            if (digit == '3') {
-                result.append(FOO);
-            } else if (digit == '5') {
-                result.append(BAR);
-            } else if (digit == '7') {
-                result.append(QUIX);
+            switch (digit) {
+                case '3':
+                    result.append(FOO);
+                    break;
+                case '5':
+                    result.append(BAR);
+                    break;
+                case '7':
+                    result.append(QUIX);
+                    break;
+                default:
+                    // No action required for other digits
+                    break;
             }
         }
 

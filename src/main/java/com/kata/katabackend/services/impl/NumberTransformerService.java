@@ -1,10 +1,11 @@
-package com.kata.katabackend.services;
+package com.kata.katabackend.services.impl;
 
+import com.kata.katabackend.services.INumberTransformService;
 import com.kata.katabackend.utils.NumberTransformer;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NumberTransformerService {
+public class NumberTransformerService implements INumberTransformService {
 
     /**
      * Service transform number.
