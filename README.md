@@ -14,7 +14,7 @@ This project is a Spring Boot application that transforms a number (between 0 an
 
 ### Prerequisites
 
-- Java 11
+- Java 17
 - Maven
 
 ### Running the Application
@@ -50,14 +50,6 @@ This project is a Spring Boot application that transforms a number (between 0 an
 - **Response:**
     - Returns a string based on the transformation rules.
 
-### Transform Number (POST)
-
-- **URL:** `/api/v1/transform`
-- **Method:** `POST`
-- **Request Body:**
-    - `number` (integer): The number to be transformed.
-- **Response:**
-    - Returns a string based on the transformation rules.
 
 ## Unit Tests
 
