@@ -17,9 +17,7 @@ public class NumberTransformerService implements INumberTransformService {
      */
     @Override
     public String transformNumber(int number) throws NumberNotInRangeException {
-
             return NumberTransformer.transform(number);
-
     }
 
 

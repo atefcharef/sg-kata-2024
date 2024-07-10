@@ -10,60 +10,60 @@ class NumberTransformerTest {
 
 
     @Test
-    void testTransform102() {
+    void shouldThrowExceptionWhenNumberIsOutOfRange() {
         assertThrows(NumberNotInRangeException.class, () -> NumberTransformer.transform(101));
     }
 
 
     @Test
-    void testTransform3() throws NumberNotInRangeException {
+    void shouldReturnFOOFOOWhenNumberIs3() throws NumberNotInRangeException {
         assertEquals("FOOFOO", NumberTransformer.transform(3));
     }
 
     @Test
-    void testTransform5() throws NumberNotInRangeException {
+    void shouldReturnBARBARWhenNumberIs5() throws NumberNotInRangeException {
         assertEquals("BARBAR", NumberTransformer.transform(5));
     }
 
     @Test
-    void testTransform1() throws NumberNotInRangeException {
+    void shouldReturnNumberAsStringWhenNumberIs1() throws NumberNotInRangeException {
         assertEquals("1", NumberTransformer.transform(1));
     }
 
     @Test
-    void testTransform88() throws NumberNotInRangeException {
+    void shouldReturnNumberAsStringWhenNumberIs88() throws NumberNotInRangeException {
         assertEquals("88", NumberTransformer.transform(88));
     }
 
 
 
     @Test
-    void testTransform7() throws NumberNotInRangeException {
+    void shouldReturnQUIXWhenNumberIs7() throws NumberNotInRangeException {
         assertEquals("QUIX", NumberTransformer.transform(7));
     }
 
     @Test
-    void testTransform9() throws NumberNotInRangeException {
+    void shouldReturnFOOWhenNumberIs9() throws NumberNotInRangeException {
         assertEquals("FOO", NumberTransformer.transform(9));
     }
 
     @Test
-    void testTransform51() throws NumberNotInRangeException {
+    void shouldReturnFOOBARWhenNumberIs51() throws NumberNotInRangeException {
         assertEquals("FOOBAR", NumberTransformer.transform(51));
     }
 
     @Test
-    void testTransform53() throws NumberNotInRangeException {
+    void shouldReturnBARFOOWhenNumberIs53() throws NumberNotInRangeException {
         assertEquals("BARFOO", NumberTransformer.transform(53));
     }
 
     @Test
-    void testTransform33() throws NumberNotInRangeException {
+    void shouldReturnFOOFOOFOOWhenNumberIs33() throws NumberNotInRangeException {
         assertEquals("FOOFOOFOO", NumberTransformer.transform(33));
     }
 
     @Test
-    void testTransform15() throws NumberNotInRangeException {
+    void shouldReturnFOOBARBARWhenNumberIs15() throws NumberNotInRangeException {
         assertEquals("FOOBARBAR", NumberTransformer.transform(15));
     }
   

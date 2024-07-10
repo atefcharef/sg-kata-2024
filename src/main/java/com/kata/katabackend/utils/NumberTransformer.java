@@ -7,18 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NumberTransformer {
 
-
     public static final String FOO = "FOO";
     public static final String BAR = "BAR";
     public static final String QUIX = "QUIX";
 
-    /**
-     * Transforms a number into a string based on specific rules.
-     *
-     * @param number the number to transform
-     * @return the transformed string
-     * @throws NumberNotInRangeException if the number is not in the range 0-100
-     */
     public static String transform(int number) throws NumberNotInRangeException  {
 
         if (number < 0 || number > 100) {
@@ -36,24 +28,14 @@ public class NumberTransformer {
         }
 
         for (char digit : numberStr.toCharArray()) {
-            switch (digit) {
-                case '3':
-                    result.append(FOO);
-                    break;
-                case '5':
-                    result.append(BAR);
-                    break;
-                case '7':
-                    result.append(QUIX);
-                    break;
-                default:
-                    // No action required for other digits
-                    break;
-            }
+            result.append(switch (digit) {
+                case '3' -> FOO;
+                case '5' -> BAR;
+                case '7' -> QUIX;
+                default -> "";
+            });
         }
 
         return !result.isEmpty() ? result.toString() : numberStr;
     }
-
 }
-
