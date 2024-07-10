@@ -19,7 +19,7 @@ class NumberTransformerServiceTest {
     private NumberTransformerService numberTransformerService;
 
     @Test
-    void shouldReturnTransformedNumberWhenInputIs33() {
+    void shouldReturnTransformedNumberWhenInputIs33() throws NumberNotInRangeException {
 
         int input = 33;
         String expectedOutput = "FOOFOOFOO";
@@ -32,7 +32,6 @@ class NumberTransformerServiceTest {
     @Test
     void shouldThrowExceptionWhenNumberOutOfRange() {
         int input = 123;
-
         assertThrows(NumberNotInRangeException.class, () -> numberTransformerService.transformNumber(input));
     }
 

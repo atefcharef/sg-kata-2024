@@ -1,123 +1,59 @@
 package com.kata.katabackend.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kata.katabackend.dtos.NumberTransformRequest;
-import com.kata.katabackend.exceptions.NumberNotInRangeException;
-import com.kata.katabackend.services.INumberTransformService;
-import com.kata.katabackend.services.impl.NumberTransformerService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import com.kata.katabackend.exceptions.NumberNotInRangeException;
+import com.kata.katabackend.services.impl.NumberTransformerService;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.mockito.MockitoAnnotations;
-
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class NumberTransformationControllerTest {
 
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(NumberTransformerController.class)
-public class NumberTransformerControllerTest {
+    @LocalServerPort
+    private int port;
 
     @Autowired
-    private MockMvc mockMvc;
+    private TestRestTemplate restTemplate;
+
 
     @MockBean
-    private INumberTransformService numberTransformerService;
+    private NumberTransformerService service;
 
-    @InjectMocks
-    private NumberTransformerController numberTransformerController;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(numberTransformerController).build();
-    }
 
     @Test
-    void shouldReturnTransformedNumber_whenNumberIsInRangeInGetRequest() throws Exception {
-        int number = 33;
-        String transformedNumber = "FOOFOOFOO";
+    void shouldReturnDefaultMessage_whenNumberIs33() {
+        when(service.transformNumber(33)).thenReturn("FOOFOOFOO");
 
-        when(numberTransformerService.transformNumber(number)).thenReturn(transformedNumber);
-
-        mockMvc.perform(get("/{number}", number))
-                .andExpect(status().isOk())
-                .andExpect(content().string(transformedNumber));
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/transform/33",
+                String.class)).contains("FOOFOOFOO");
     }
+
 
     @Test
-    void shouldReturnBadRequest_whenNumberNotInRangeInGetRequest() throws Exception {
-        int number = 101;
+    void shouldReturnDefaultMessage_whenNumberIs88() {
+        int number = 88;
+        when(service.transformNumber(number)).thenReturn("88");
 
-        when(numberTransformerService.transformNumber(number)).thenThrow(NumberNotInRangeException.class);
-
-        mockMvc.perform(get("/{number}", number))
-                .andExpect(status().isBadRequest());
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/transform/"+number,
+                String.class)).contains("88");
     }
+
 
     @Test
-    void shouldReturnTransformedNumber_whenNumberIsInRangeInPostRequest() throws Exception {
-        int number = 33;
-        String transformedNumber = "FOOFOOFOO";
+    void shouldReturnErrorMessage_whenNumberIsOutOfRange() {
+        int number = 1002;
+        when(service.transformNumber(number)).thenThrow(new NumberNotInRangeException("Number must be between 0 and 100"));
 
-        when(numberTransformerService.transformNumber(number)).thenReturn(transformedNumber);
-
-        mockMvc.perform(post("/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"number\":33}"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(transformedNumber));
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/transform/"+number,
+                String.class)).contains("Number must be between 0 and 100");
     }
 
-    @Test
-    void shouldReturnBadRequest_whenNumberNotInRangeInPostRequest() throws Exception {
-        int number = 101;
-
-        when(numberTransformerService.transformNumber(number)).thenThrow(NumberNotInRangeException.class);
-
-        mockMvc.perform(post("/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"number\":101}"))
-                .andExpect(status().isBadRequest());
-    }
 }

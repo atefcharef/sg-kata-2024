@@ -1,5 +1,6 @@
 package com.kata.katabackend.services.impl;
 
+import com.kata.katabackend.exceptions.NumberNotInRangeException;
 import com.kata.katabackend.services.INumberTransformService;
 import com.kata.katabackend.utils.NumberTransformer;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,14 @@ public class NumberTransformerService implements INumberTransformService {
      *
      * @param number int
      * @return String
+     * @throws NumberNotInRangeException when number is out of range
      */
-    public String transformNumber(int number) {
-        return NumberTransformer.transform(number);
+    @Override
+    public String transformNumber(int number) throws NumberNotInRangeException {
+
+            return NumberTransformer.transform(number);
+
     }
+
+
 }
