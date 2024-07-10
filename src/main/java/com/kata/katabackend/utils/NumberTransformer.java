@@ -17,6 +17,7 @@ public class NumberTransformer {
      *
      * @param number the number to transform
      * @return the transformed string
+     * @throws NumberNotInRangeException if the number is not in the range 0-100
      */
     public static String transform(int number) throws NumberNotInRangeException  {
 
